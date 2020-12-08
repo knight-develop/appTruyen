@@ -71,5 +71,12 @@ public class chuongDAO {
         List<Chuong> list = selectBySQL(sql, id);        
         return list;
     }
-    
+    public Chuong selectByName(String name){
+        String sql = "select * from chuong where name = ?";
+        List<Chuong> list = selectBySQL(sql, name);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
 }

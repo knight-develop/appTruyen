@@ -4,12 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/ThongTinTruyen.java</file>
-            <file>file:/E:/DuAn1/appDocTruyen/src/com/dao/UserDAO.java</file>
+            <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/Login.java</file>
+            <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/PDFform.java</file>
             <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/mainForm.java</file>
-            <file>file:/E:/DuAn1/appDocTruyen/src/com/dao/chiTietDAO.java</file>
-            <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/DangKy.java</file>
-            <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/LichSu.java</file>
-            <file>file:/E:/DuAn1/appDocTruyen/src/com/dao/HISDAO.java</file>
+            <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/QuanLyTruyen.java</file>
+            <file>file:/E:/DuAn1/appDocTruyen/src/com/ui/DoiMatKhau.java</file>
+            <file>file:/E:/DuAn1/appDocTruyen/src/com/dao/chuongDAO.java</file>
         </group>
     </open-files>
 </project-private>

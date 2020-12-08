@@ -36,7 +36,12 @@ public class QuanLyTheLoai extends javax.swing.JInternalFrame {
     }
     private void fillTable(){
         DefaultTableModel model = (DefaultTableModel) tblTL.getModel();
-        model.setRowCount(0);           
+        model.setRowCount(0); 
+        try {
+            list = dao.selectAll();
+        } catch (SQLException ex) {
+            Logger.getLogger(QuanLyTheLoai.class.getName()).log(Level.SEVERE, null, ex);
+        }
             for(theLoai tl : list){
                 model.addRow(new Object[]{
                     tl.getId(),tl.getTenTL()
@@ -278,8 +283,8 @@ public class QuanLyTheLoai extends javax.swing.JInternalFrame {
         theLoai tL = getModel();
         try {
             dao.insert(tL);
-            MsgBox.alert(this, "Thêm thành công");
             fillTable();
+            MsgBox.alert(this, "Thêm thành công");            
             clearForm();
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyTheLoai.class.getName()).log(Level.SEVERE, null, ex);

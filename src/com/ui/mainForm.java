@@ -23,12 +23,16 @@ public class mainForm extends javax.swing.JFrame {
     /**
      * Creates new form mainForm
      */
-    truyenDAO tRDAO = new truyenDAO();
+    public static truyenDAO tRDAO = new truyenDAO();
     public static String name = "";
-
+    public static DefaultListModel model= new DefaultListModel();
     public mainForm() {
         initComponents();
-        mnu.setVisible(false);
+        mnuTG.setVisible(false);
+        mnuHT.setVisible(false);
+        mnuTL.setVisible(false);
+        mnuTruyen.setVisible(false);
+        this.setLocationRelativeTo(null);
         fill();
     }
 
@@ -62,15 +66,15 @@ public class mainForm extends javax.swing.JFrame {
         btnACC = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         mnu = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        mnuHT = new javax.swing.JMenu();
         menuDX = new javax.swing.JMenuItem();
         menuDMK = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        mnuTruyen = new javax.swing.JMenu();
         menuTruyen = new javax.swing.JMenuItem();
         menuChuong = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        mnuTG = new javax.swing.JMenu();
         menuTG = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        mnuTL = new javax.swing.JMenu();
         menuTL = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -280,8 +284,8 @@ public class mainForm extends javax.swing.JFrame {
         mnu.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         mnu.setPreferredSize(new java.awt.Dimension(126, 32));
 
-        jMenu1.setText("Hệ thống");
-        jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        mnuHT.setText("Hệ thống");
+        mnuHT.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         menuDX.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menuDX.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/Stop.png"))); // NOI18N
@@ -291,7 +295,7 @@ public class mainForm extends javax.swing.JFrame {
                 menuDXActionPerformed(evt);
             }
         });
-        jMenu1.add(menuDX);
+        mnuHT.add(menuDX);
 
         menuDMK.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menuDMK.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/Refresh.png"))); // NOI18N
@@ -301,13 +305,13 @@ public class mainForm extends javax.swing.JFrame {
                 menuDMKActionPerformed(evt);
             }
         });
-        jMenu1.add(menuDMK);
+        mnuHT.add(menuDMK);
 
-        mnu.add(jMenu1);
+        mnu.add(mnuHT);
 
-        jMenu2.setText("Truyện");
-        jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jMenu2.setPreferredSize(new java.awt.Dimension(65, 24));
+        mnuTruyen.setText("Truyện");
+        mnuTruyen.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        mnuTruyen.setPreferredSize(new java.awt.Dimension(65, 24));
 
         menuTruyen.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menuTruyen.setText("Quản lý truyện");
@@ -316,7 +320,7 @@ public class mainForm extends javax.swing.JFrame {
                 menuTruyenActionPerformed(evt);
             }
         });
-        jMenu2.add(menuTruyen);
+        mnuTruyen.add(menuTruyen);
 
         menuChuong.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menuChuong.setText("Quản lý chương");
@@ -325,12 +329,12 @@ public class mainForm extends javax.swing.JFrame {
                 menuChuongActionPerformed(evt);
             }
         });
-        jMenu2.add(menuChuong);
+        mnuTruyen.add(menuChuong);
 
-        mnu.add(jMenu2);
+        mnu.add(mnuTruyen);
 
-        jMenu3.setText("Tác giả");
-        jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        mnuTG.setText("Tác giả");
+        mnuTG.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         menuTG.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menuTG.setText("Quản lý tác giả");
@@ -339,12 +343,12 @@ public class mainForm extends javax.swing.JFrame {
                 menuTGActionPerformed(evt);
             }
         });
-        jMenu3.add(menuTG);
+        mnuTG.add(menuTG);
 
-        mnu.add(jMenu3);
+        mnu.add(mnuTG);
 
-        jMenu4.setText("Thể loại");
-        jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        mnuTL.setText("Thể loại");
+        mnuTL.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         menuTL.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menuTL.setText("Quản lý thể loại");
@@ -353,9 +357,9 @@ public class mainForm extends javax.swing.JFrame {
                 menuTLActionPerformed(evt);
             }
         });
-        jMenu4.add(menuTL);
+        mnuTL.add(menuTL);
 
-        mnu.add(jMenu4);
+        mnu.add(mnuTL);
 
         setJMenuBar(mnu);
 
@@ -383,8 +387,11 @@ public class mainForm extends javax.swing.JFrame {
 
     private void menuDXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDXActionPerformed
         // TODO add your handling code here:
-        if (Auth.isManager()) {
-            mnu.setVisible(false);
+        if (Auth.isLogin()) {
+            mnuTG.setVisible(false);
+            mnuHT.setVisible(false);
+            mnuTL.setVisible(false);
+            mnuTruyen.setVisible(false);
         }
         Auth.clear();
     }//GEN-LAST:event_menuDXActionPerformed
@@ -508,11 +515,7 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JButton btnRank;
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
+    public static javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -530,15 +533,19 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuTL;
     private javax.swing.JMenuItem menuTruyen;
     public static javax.swing.JMenuBar mnu;
+    public static javax.swing.JMenu mnuHT;
+    public static javax.swing.JMenu mnuTG;
+    public static javax.swing.JMenu mnuTL;
+    public static javax.swing.JMenu mnuTruyen;
     // End of variables declaration//GEN-END:variables
-    private void fill() {
-        DefaultListModel model = (DefaultListModel) jList1.getModel();
+    public static void fill() {
+        model = (DefaultListModel) jList1.getModel();
         model.clear();
         List<Truyen> list = tRDAO.selectAll();
-        if(list == null){
+        if (list == null) {
             return;
         }
-        for (Truyen tr :list) {
+        for (Truyen tr : list) {
             model.addElement(new Truyen(tr.getName(), new ImageIcon("E:\\DuAn1\\appDocTruyen\\src\\com\\imgStory\\" + tr.getHinh())));
         }
         jList1.setCellRenderer(new Renderer());

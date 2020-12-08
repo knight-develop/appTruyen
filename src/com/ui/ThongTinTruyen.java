@@ -46,10 +46,14 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
     chiTietDAO cTDAO = new chiTietDAO();
     HISDAO hDAO = new HISDAO();
     List<History> listHS = new ArrayList<>();
+    DefaultListModel model = new DefaultListModel();
     String name = mainForm.name;
+    public static String nameChuong = "";
+    public static int i;
     public ThongTinTruyen() {
         initComponents();
         init();
+        
         add();
     }
 
@@ -109,7 +113,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         );
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jLabel3.setText("Tác giả");
+        jLabel3.setText("Tác giả:");
 
         txtName.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         txtName.setText("Tên truyện");
@@ -129,6 +133,11 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         listCg.setModel(new DefaultListModel());
         listCg.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listCg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        listCg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listCgMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(listCg);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -269,7 +278,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         // TODO add your handling code here:
         
@@ -279,6 +288,17 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         if(check())return;
         addHis();
     }//GEN-LAST:event_btnReadActionPerformed
+
+    private void listCgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCgMouseClicked
+        // TODO add your handling code here:
+        readChuong();
+        PDFform pdf = new PDFform();
+        Desktop1.add(pdf);
+        pdf.setVisible(true);
+        if(check())return;
+        addHis();
+        
+    }//GEN-LAST:event_listCgMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -309,6 +329,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         Dimension size1 = Desktop1.getSize();
         Dimension size = this.getSize();
         this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
+        model = (DefaultListModel) listCg.getModel();
         fillToList();
     }
 
@@ -325,7 +346,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         tacGia tg = tGDAO.selectByID(tr.getTacGia());
         txtTacGia.setText(tg.getName());
         txaGT.setText(tr.getGioiThieu());
-        DefaultListModel model = (DefaultListModel) listCg.getModel();
+        
         List<Chuong> list = cDAO.selectByTID(tr.getId());
         if (list.isEmpty()) {
             model.addElement(null);
@@ -333,6 +354,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
             for (Chuong c : list) {
                 model.addElement(c.getTenChuong());
             }
+            listCg.setModel(model);
         }
 
         if (tr.getHinh() != null) {
@@ -384,5 +406,8 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         History hs = new History();
         hs.setTruyen_id(tr.getId());
         hDAO.insert(hs);
+    }
+    private void readChuong(){
+        nameChuong = String.valueOf(listCg.getSelectedValue());             
     }
 }

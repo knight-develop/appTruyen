@@ -10,6 +10,7 @@ import com.dao.chuongDAO;
 import com.dao.truyenDAO;
 import com.models.Chuong;
 import com.models.Truyen;
+import static com.ui.ThongTinTruyen.nameChuong;
 import java.io.FileOutputStream;
 import java.util.Base64;
 import java.util.List;
@@ -108,11 +109,24 @@ public class PDFform extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cboChuong;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    private void loadPDF() {
-        String name = mainForm.name;
-        Truyen tr = tRDAO.selectByName( name);
-        List<Chuong> list = cDAO.selectByTID(tr.getId());
-        Chuong cg = list.get(0) ;
+    public void loadPDF() {       
+        String nameTr = mainForm.name;
+        String nameCG = nameChuong;
+        Chuong cg = new Chuong();
+        if(nameCG.isEmpty()){
+            Truyen tr = tRDAO.selectByName(nameTr);
+            List<Chuong> list = cDAO.selectByTID(tr.getId());
+            if(list == null){
+                return;
+            }
+            cg = list.get(0);
+        }
+        else{
+            cg = cDAO.selectByName(nameCG);
+            if(cg == null){
+                return;
+            }
+        }
         String base64 = cg.getFilePDF();
         String pdf = "src//com//chapter//"+cg.getTenChuong()+".pdf";
         try (FileOutputStream imgOutFile = new FileOutputStream(pdf)){
@@ -121,7 +135,7 @@ public class PDFform extends javax.swing.JInternalFrame {
             imgOutFile.write(imgByteArray);
         } catch (Exception e) {
             System.out.println("loi");
-        }
+        }       
         openpdf(pdf);
     }
 

@@ -10,6 +10,10 @@ import com.dao.UserDAO;
 import com.models.User;
 import static com.ui.mainForm.Desktop1;
 import static com.ui.mainForm.mnu;
+import static com.ui.mainForm.mnuHT;
+import static com.ui.mainForm.mnuTG;
+import static com.ui.mainForm.mnuTL;
+import static com.ui.mainForm.mnuTruyen;
 import com.utils.Auth;
 import com.utils.MsgBox;
 import java.awt.Dimension;
@@ -28,7 +32,7 @@ public class Login extends javax.swing.JInternalFrame {
      * Creates new form Login
      */
     UserDAO dao = new UserDAO();
-            
+
     public Login() {
         initComponents();
         init();
@@ -201,7 +205,7 @@ public class Login extends javax.swing.JInternalFrame {
         this.dispose();
         dk.setVisible(true);
     }//GEN-LAST:event_lblDKMouseClicked
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLog;
@@ -217,26 +221,27 @@ public class Login extends javax.swing.JInternalFrame {
     private javax.swing.JPasswordField txtpass;
     private javax.swing.JTextField txtuser;
     // End of variables declaration//GEN-END:variables
-    private void login(){
+    private void login() {
         String user = txtuser.getText();
         String pass = new String(txtpass.getPassword());
         try {
             User us = dao.selectByID(user);
-            if(us == null){
-                
+            if (us == null) {
                 MsgBox.alert(this, "Sai tên đăng nhập");
-                System.out.println(us.getUser());
-            }
-            else if(!pass.equals(us.getPass())){
+                return;
+            } else if (!pass.equals(us.getPass())) {
                 MsgBox.alert(this, "Sai mật khẩu");
-            }
-            else{
+            } else {
                 Auth.user = us;
-                if(Auth.isManager()){
-                    mnu.setVisible(true);
-                }
-                else{
-                    mnu.setVisible(false);
+                if (Auth.isManager()) {
+                    mnuTG.setVisible(true);
+                    mnuHT.setVisible(true);
+                    mnuTL.setVisible(true);
+                    mnuTruyen.setVisible(true);
+                } else {
+
+                    mnuHT.setVisible(false);
+
                 }
                 this.dispose();
             }

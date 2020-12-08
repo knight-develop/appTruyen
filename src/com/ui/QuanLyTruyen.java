@@ -14,6 +14,7 @@ import com.models.Truyen;
 import com.models.chiTietTruyen;
 import com.models.tacGia;
 import com.models.theLoai;
+import static com.ui.mainForm.fill;
 import com.utils.MsgBox;
 import com.utils.XImage;
 import java.awt.Dimension;
@@ -46,11 +47,12 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     JFileChooser jfc = new JFileChooser("\\com\\imgStory");
     int row;
     List<Truyen> listTR = new ArrayList<>();
+
     public QuanLyTruyen() {
         initComponents();
         init();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,10 +89,10 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         jList = new javax.swing.JList<>();
         jLabel6 = new javax.swing.JLabel();
         lbltitle = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboName = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblTL = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
         lbltitle1 = new javax.swing.JLabel();
 
@@ -336,11 +338,16 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         lbltitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbltitle.setText("Thêm thể loại");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboNameActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh sách thể loại"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTL.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null},
                 {null},
@@ -351,7 +358,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                 "Tên thể loại"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(tblTL);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -396,7 +403,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGap(123, 123, 123)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(cboName, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -419,7 +426,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboName, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
@@ -461,29 +468,31 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void fillToTable(List<Truyen> Data){
+    private void fillToTable(List<Truyen> Data) {
         DefaultTableModel model = (DefaultTableModel) tblTruyen.getModel();
-        model.setRowCount(0);        
-        for(Truyen tr : Data){
+        model.setRowCount(0);
+        for (Truyen tr : Data) {
             tacGia tg = tGDAO.selectByID(tr.getTacGia());
             model.addRow(new Object[]{
-                tr.getId(),tr.getName(),tg.getName(),tr.getTrangThai()?"Hoàn thành" : "Đang cập nhật"
+                tr.getId(), tr.getName(), tg.getName(), tr.getTrangThai() ? "Hoàn thành" : "Đang cập nhật"
             });
         }
     }
-    private void fillToCBO(){
+
+    private void fillToCBO() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboTG.getModel();
         model.removeAllElements();
         List<tacGia> listTG = tGDAO.selectAll();
-        for(tacGia tg :listTG){
+        for (tacGia tg : listTG) {
             model.addElement(tg);
         }
     }
-    private void fillToList() throws SQLException{
+
+    private void fillToList() throws SQLException {
         DefaultListModel model = (DefaultListModel) jList.getModel();
         model.removeAllElements();
         List<theLoai> listTL = tLDAO.selectAll();
-        for(theLoai tl : listTL){
+        for (theLoai tl : listTL) {
             model.addElement(tl.getTenTL());
         }
     }
@@ -494,7 +503,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
         // TODO add your handling code here:
-        if(checkValidate()){
+        if (checkValidate()) {
             return;
         }
         insert();
@@ -502,7 +511,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
     private void tblTruyenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTruyenMouseClicked
         // TODO add your handling code here:
-        if(evt.getClickCount() == 2){
+        if (evt.getClickCount() == 2) {
             this.row = tblTruyen.getSelectedRow();
             tabs.setSelectedIndex(0);
             edit();
@@ -511,7 +520,9 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        if(checkValidate()) return;
+        if (checkValidate()) {
+            return;
+        }
         update();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -522,80 +533,104 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
     private void jListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListMouseClicked
         // TODO add your handling code here: 
-        if(evt.getClickCount() == 2){
-            if(check())return;
+        if (evt.getClickCount() == 2) {
+            if (check()) {
+                return;
+            }
             insertCT();
+            fill();
         }
     }//GEN-LAST:event_jListMouseClicked
-    
+
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void txtSearchInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtSearchInputMethodTextChanged
-            // TODO add your handling code here:
-            
+        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtSearchInputMethodTextChanged
 
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtSearchActionPerformed
 
     private void txtSearchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusGained
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtSearchFocusGained
 
     private void txtSearchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSearchFocusLost
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtSearchFocusLost
 
     private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
         // TODO add your handling code here:
         String name = txtSearch.getText();
         Truyen tr = dao.selectByName(name);
-            List<Truyen> list = new ArrayList<>();
-            list.add(tr);
-            if(list != null){
-                fillToTable(list);
-            }
-            
-            else if (name.isEmpty()){
-                fillToTable(listTR);
-            }
+        List<Truyen> list = new ArrayList<>();
+        list.add(tr);
+        if (list != null) {
+            fillToTable(list);
+        } else if (name.isEmpty()) {
+            fillToTable(listTR);
+        }
     }//GEN-LAST:event_txtSearchKeyReleased
-    private void addImage(){
-        if(jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+
+    private void cboNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNameActionPerformed
+        // TODO add your handling code here:
+        Truyen tr = (Truyen) cboName.getSelectedItem();
+        List<chiTietTruyen> list = CTDAO.selectListByID(tr.getId());
+        DefaultTableModel model = (DefaultTableModel) tblTL.getModel();
+        model.setRowCount(0);
+        for (chiTietTruyen ct : list) {
+            try {
+                theLoai tl = tLDAO.selectByID(ct.getTheLoai());
+                model.addRow(new Object[]{
+                    tl.getTenTL()
+                });
+            } catch (SQLException ex) {
+                Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_cboNameActionPerformed
+    private void addImage() {
+        if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jfc.getSelectedFile();
             ImageIcon icon = XImage.read(file.getName());
             lblIM.setIcon(icon);
             lblIM.setToolTipText(file.getName());
         }
     }
-    private boolean check(){
+
+    private boolean check() {
         String nameAU = jList.getSelectedValue();
         String nameTR = txtname.getText();
-        
+
         try {
-              theLoai tl = tLDAO.getIDByName(nameAU);
+            theLoai tl = tLDAO.getIDByName(nameAU);
             Truyen tr = dao.selectByName(nameTR);
             List<chiTietTruyen> list = CTDAO.selectListByID(tr.getId());
-            for(chiTietTruyen ct : list){
-                if(ct.getTheLoai() == tl.getId()){
-                    MsgBox.alert(this, "Thể loại đã tồn tại");
-                    return true;
+            if (list != null) {
+                for (chiTietTruyen ct : list) {
+                    if (ct.getTheLoai() == tl.getId()) {
+                        MsgBox.alert(this, "Thể loại đã tồn tại");
+                        return true;
+                    }
                 }
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         return false;
     }
-    private chiTietTruyen insertCT(){
+
+    private chiTietTruyen insertCT() {
         chiTietTruyen cTT = new chiTietTruyen();
         String nameAU = jList.getSelectedValue();
         String nameTR = txtname.getText();
@@ -604,7 +639,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             Truyen tr = dao.selectByName(nameTR);
             cTT.setTruyen(tr.getId());
             cTT.setTheLoai(tl.getId());
-            
+
             CTDAO.insert(cTT);
             MsgBox.alert(this, "Thêm thành công");
         } catch (SQLException ex) {
@@ -617,9 +652,9 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cboName;
     private javax.swing.JComboBox<String> cboTG;
     private javax.swing.JComboBox<String> cboTrangThai;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -637,22 +672,22 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblIM;
     private javax.swing.JLabel lbltitle;
     private javax.swing.JLabel lbltitle1;
     private javax.swing.JTabbedPane tabs;
+    private javax.swing.JTable tblTL;
     private javax.swing.JTable tblTruyen;
     private javax.swing.JTextArea txaGT;
     private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtname;
     // End of variables declaration//GEN-END:variables
 
-    private void init(){
+    private void init() {
         JDesktopPane Desktop1 = mainForm.Desktop1;
         Dimension size1 = Desktop1.getSize();
         Dimension size = this.getSize();
-        this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);   
+        this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
         listTR = dao.selectAll();
         fillToTable(listTR);
         try {
@@ -661,84 +696,93 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
         fillToCBO();
+        fillCBoTR();
         this.row = -1;
-        updateStatus();     
+        updateStatus();
     }
-    private boolean checkValidate(){
-        if(txtname.getText().isEmpty()||txaGT.getText().isEmpty()||lblIM.getToolTipText().isEmpty()){
+
+    private boolean checkValidate() {
+        if (txtname.getText().isEmpty() || txaGT.getText().isEmpty() || lblIM.getToolTipText().isEmpty()) {
             MsgBox.alert(this, "Điền thông tin và chọn ảnh");
             return true;
         }
         return false;
     }
-    private Truyen getModel(){
+
+    private Truyen getModel() {
         Truyen tr = new Truyen();
         tacGia tg = (tacGia) cboTG.getSelectedItem();
         tr.setName(txtname.getText());
-        tr.setGioiThieu(txaGT.getText());       
+        tr.setGioiThieu(txaGT.getText());
         tr.setTacGia(tg.getId());
         tr.setTrangThai(false);
-        if(cboTrangThai.getSelectedIndex() == 1){
+        if (cboTrangThai.getSelectedIndex() == 1) {
             tr.setTrangThai(true);
         }
         tr.setHinh(lblIM.getToolTipText());
         return tr;
     }
-    private void setModel(Truyen tr){
+
+    private void setModel(Truyen tr) {
         txtname.setText(tr.getName());
         txaGT.setText(tr.getGioiThieu());
         boolean status = tr.getTrangThai();
         cboTrangThai.setSelectedIndex(0);
-        if(status == true){
+        if (status == true) {
             cboTrangThai.setSelectedIndex(1);
         }
         tacGia tg = tGDAO.selectByID(tr.getTacGia());
-        cboTG.setSelectedItem(tg.getName());     
+        cboTG.setSelectedItem(tg.getName());
         if (tr.getHinh() != null) {
             lblIM.setToolTipText(tr.getHinh());
             lblIM.setIcon(XImage.read(tr.getHinh()));
         }
     }
-    private void edit(){
+
+    private void edit() {
         int id = (int) tblTruyen.getValueAt(row, 0);
         Truyen tr = dao.selectByID(id);
         this.setModel(tr);
         tabs.setSelectedIndex(0);
         updateStatus();
     }
-    
+
     private void updateStatus() {
         boolean edit = (this.row >= 0);
         btnADD.setEnabled(!edit);
         btnDelete.setEnabled(edit);
         btnUpdate.setEnabled(edit);
     }
-    private void insert(){
+
+    private void insert() {
         Truyen tr = getModel();
         try {
             dao.insert(tr);
-            fillToTable(listTR);
+            List<Truyen> list = dao.selectAll();
+            fillToTable(list);
             MsgBox.alert(this, "Thêm thành công");
             tabs.setSelectedIndex(2);
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private Truyen getUpdate(){
+
+    private Truyen getUpdate() {
         int id = (int) tblTruyen.getValueAt(row, 0);
         Truyen tr = dao.selectByID(id);
         tacGia tg = (tacGia) cboTG.getSelectedItem();
         tr.setName(txtname.getText());
-        tr.setGioiThieu(txaGT.getText());       
+        tr.setGioiThieu(txaGT.getText());
         tr.setTacGia(tg.getId());
         tr.setTrangThai(false);
-        if(cboTrangThai.getSelectedIndex() == 1){
+        if (cboTrangThai.getSelectedIndex() == 1) {
             tr.setTrangThai(true);
         }
         tr.setHinh(lblIM.getToolTipText());
         return tr;
     }
-    private void update(){
+
+    private void update() {
         Truyen tr = getUpdate();
         try {
             dao.update(tr);
@@ -748,13 +792,23 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    private void delete(){
+
+    private void delete() {
         int id = (int) tblTruyen.getValueAt(row, 0);
         Truyen tr = dao.selectByID(id);
         try {
             dao.delete(tr);
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void fillCBoTR() {
+        List<Truyen> list = dao.selectAll();
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboName.getModel();
+        model.removeAllElements();
+        for (Truyen tr : list) {
+            model.addElement(tr);
         }
     }
 }
