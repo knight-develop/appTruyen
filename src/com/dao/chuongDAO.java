@@ -68,7 +68,10 @@ public class chuongDAO {
     }
     public List<Chuong> selectByTID(int id){
         String sql = "select * from chuong where truyen_id = ?";
-        List<Chuong> list = selectBySQL(sql, id);        
+        List<Chuong> list = selectBySQL(sql, id);
+        if(list.isEmpty()){
+            return null;
+        }
         return list;
     }
     public Chuong selectByName(String name){

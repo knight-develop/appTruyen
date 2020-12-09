@@ -38,7 +38,7 @@ public class XImage {
         }
     }
     public static ImageIcon read(String fileName){
-        File path = new File("logos", fileName);
+        File path = new File("imgStory", fileName);
         return new ImageIcon(path.getAbsolutePath());
     }
 }

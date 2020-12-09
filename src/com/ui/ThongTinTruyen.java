@@ -19,6 +19,7 @@ import com.models.tacGia;
 import com.models.theLoai;
 import com.ui.mainForm;
 import static com.ui.mainForm.Desktop1;
+import com.utils.MsgBox;
 
 import com.utils.XImage;
 import java.awt.Dimension;
@@ -80,7 +81,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         listCg = new javax.swing.JList<>();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
         txaGT = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         listTl = new javax.swing.JList<>();
@@ -155,18 +156,19 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
 
         txaGT.setEditable(false);
         txaGT.setColumns(20);
+        txaGT.setFont(new java.awt.Font("Monospaced", 0, 18)); // NOI18N
         txaGT.setRows(5);
-        jScrollPane3.setViewportView(txaGT);
+        jScrollPane4.setViewportView(txaGT);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Giới thiệu", jPanel4);
@@ -281,7 +283,12 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
     
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         // TODO add your handling code here:
-        
+        Truyen tr = dao.selectByName(name);
+            List<Chuong> list = cDAO.selectByTID(tr.getId());
+            if(list == null){
+                MsgBox.alert(this, "Truyện đang được cập nhật");
+                return;
+            }
         PDFform pdf = new PDFform();
         Desktop1.add(pdf);
         pdf.setVisible(true);
@@ -314,7 +321,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblIMG;
     private javax.swing.JList<String> listCg;
@@ -330,6 +337,11 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         Dimension size = this.getSize();
         this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
         model = (DefaultListModel) listCg.getModel();
+        txaGT.setColumns(20);
+        txaGT.setLineWrap(true); 
+        txaGT.setRows(5); 
+        txaGT.setWrapStyleWord(true);
+        jScrollPane4.setViewportView(txaGT);
         fillToList();
     }
 
@@ -348,7 +360,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         txaGT.setText(tr.getGioiThieu());
         
         List<Chuong> list = cDAO.selectByTID(tr.getId());
-        if (list.isEmpty()) {
+            if (list == null) {
             model.addElement(null);
         } else {
             for (Chuong c : list) {

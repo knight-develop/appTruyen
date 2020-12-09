@@ -10,6 +10,7 @@ import com.dao.chuongDAO;
 import com.dao.truyenDAO;
 import com.models.Chuong;
 import com.models.Truyen;
+import com.models.tacGia;
 import com.utils.MsgBox;
 import java.awt.Dimension;
 import java.io.File;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -37,6 +39,8 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
     chuongDAO dao = new chuongDAO();
     truyenDAO trDAO = new truyenDAO();
     String base64Img = "";
+    int row;
+
     public QuanLyChuong() {
         initComponents();
         init();
@@ -63,6 +67,7 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         btnADD = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        btnDelete1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblChuong = new javax.swing.JTable();
@@ -109,9 +114,27 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
 
         btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/Edit.png"))); // NOI18N
         btnUpdate.setText("Sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/Delete.png"))); // NOI18N
         btnDelete.setText("Xoá");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/Refresh.png"))); // NOI18N
+        btnDelete1.setText("Clear");
+        btnDelete1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelete1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,17 +152,18 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
                         .addGap(47, 47, 47)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnAddFIle, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(cboTruyen, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cboTruyen, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(123, 123, 123)
+                        .addGap(65, 65, 65)
                         .addComponent(btnADD, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(94, 94, 94)
+                        .addGap(70, 70, 70)
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(125, Short.MAX_VALUE))
+                        .addGap(57, 57, 57)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62)
+                        .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +187,8 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnADD, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(77, 77, 77))
         );
 
@@ -181,12 +206,22 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
                 "ID", "Chương"
             }
         ));
+        tblChuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblChuongMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblChuong);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel4.setText("Truyện");
 
-        cboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboSearch.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        cboSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -242,20 +277,46 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private void fillTable(List<Chuong> Data) {
+        DefaultTableModel model = (DefaultTableModel) tblChuong.getModel();
+        model.setRowCount(0);
+        Data = dao.selectAll();
+        if (Data.isEmpty()) {
+            return;
+        }
+        for (Chuong cg : Data) {
+            model.addRow(new Object[]{
+                cg.getId(), cg.getTenChuong(),});
+        }
+    }
 
+    private void fillCBO() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboSearch.getModel();
+        model.removeAllElements();
+        List<Truyen> list = trDAO.selectAll();
+        if (list.isEmpty()) {
+            return;
+        }
+        for (Truyen tr : list) {           
+            model.addElement(tr);
+        }
+    }
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
         // TODO add your handling code here:
+        if (checkValidate()) {
+            return;
+        }
         insert();
     }//GEN-LAST:event_btnADDActionPerformed
 
     private void btnAddFIleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFIleActionPerformed
         // TODO add your handling code here:
-        JFileChooser jfc = new JFileChooser("E:\\DuAn1\\appDocTruyen\\src\\com");
-        if(jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+        JFileChooser jfc = new JFileChooser("E:\\DuAn1\\appDocTruyen\\src\\com\\chapter");
+        if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jfc.getSelectedFile();
             try {
                 FileInputStream imgInFile = new FileInputStream(file);
-                byte [] imgData = new byte [(int) file.length()];
+                byte[] imgData = new byte[(int) file.length()];
                 imgInFile.read(imgData);
                 base64Img = Base64.getEncoder().encodeToString(imgData);
             } catch (FileNotFoundException ex) {
@@ -263,15 +324,53 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
             } catch (IOException ex) {
                 Logger.getLogger(QuanLyChuong.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
     }//GEN-LAST:event_btnAddFIleActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+        update();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tblChuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChuongMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            row = tblChuong.getSelectedRow();
+
+            this.edit();
+        }
+    }//GEN-LAST:event_tblChuongMouseClicked
+
+    private void btnDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete1ActionPerformed
+        // TODO add your handling code here:
+        clearForm();
+    }//GEN-LAST:event_btnDelete1ActionPerformed
+
+    private void cboSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboSearchActionPerformed
+        // TODO add your handling code here:
+        Truyen tr = (Truyen) cboSearch.getSelectedItem();
+        if (tr == null) {
+            return;
+        }
+        List<Chuong> list = dao.selectByTID(tr.getId());
+        if (list == null) {
+            return;
+        }
+        fillTable(list);
+    }//GEN-LAST:event_cboSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnADD;
     private javax.swing.JButton btnAddFIle;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDelete1;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cboSearch;
     private javax.swing.JComboBox<String> cboTruyen;
@@ -292,17 +391,21 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         Dimension size1 = Desktop1.getSize();
         Dimension size = this.getSize();
         this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
+        List<Chuong> list = dao.selectAll();
         fillToCBO();
+        fillTable(list);
     }
-    private void fillToCBO(){
+
+    private void fillToCBO() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboTruyen.getModel();
         model.removeAllElements();
         List<Truyen> list = trDAO.selectAll();
-        for(Truyen tr :list){
+        for (Truyen tr : list) {
             model.addElement(tr);
         }
     }
-    private Chuong getModel(){
+
+    private Chuong getModel() {
         Chuong cg = new Chuong();
         Truyen tr = (Truyen) cboTruyen.getSelectedItem();
         cg.settruyen(tr.getId());
@@ -310,15 +413,96 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         cg.setFilePDF(base64Img);
         return cg;
     }
-    private void insert(){
+
+    private boolean checkValidate() {
+        List<Chuong> list = dao.selectAll();
+        if (txtname.getText().isEmpty()) {
+            MsgBox.alert(this, "Tên chương đang trống");
+            return true;
+        }
+        for (Chuong cg : list) {
+            if (cg.getTenChuong().equals(txtname.getText())) {
+                MsgBox.alert(this, "Tên chương đã tồn tại");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void insert() {
         Chuong cg = getModel();
         try {
             dao.insert(cg);
-            
+            MsgBox.alert(this, "Thêm thành công!");
+            fillCBO();
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyChuong.class.getName()).log(Level.SEVERE, null, ex);
+            MsgBox.alert(this, "Thêm thất bại !");
         }
     }
 
-    
+    private Chuong getModelUP() {
+        int id = (int) tblChuong.getValueAt(row, 0);
+        Chuong cg = dao.selectByID(id);
+        Truyen tr = (Truyen) cboTruyen.getSelectedItem();
+        cg.settruyen(tr.getId());
+        cg.setTenChuong(txtname.getText());
+        cg.setFilePDF(base64Img);
+        return cg;
+    }
+
+    private void update() {
+        Chuong cg = getModelUP();
+        try {
+            dao.update(cg);
+            MsgBox.alert(this, "Sửa thành công !");
+        } catch (SQLException ex) {
+            Logger.getLogger(QuanLyChuong.class.getName()).log(Level.SEVERE, null, ex);
+            MsgBox.alert(this, "Sửa thất bại !");
+        }
+    }
+
+    private void delete() {
+        int id = (int) tblChuong.getValueAt(row, 0);
+        Chuong cg = dao.selectByID(id);
+        try {
+            dao.delete(cg);
+            MsgBox.alert(this, "Xoá thành công  !");
+        } catch (SQLException ex) {
+            Logger.getLogger(QuanLyChuong.class.getName()).log(Level.SEVERE, null, ex);
+            MsgBox.alert(this, "Xoá thất bại !");
+        }
+    }
+
+    private void edit() {
+        int id = (int) tblChuong.getValueAt(this.row, 0);
+        try {
+            Chuong cg = dao.selectByID(id);
+            this.setModel(cg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        updateStatus();
+    }
+
+    private void setModel(Chuong cg) {
+        Truyen tr = trDAO.selectByID(cg.gettruyen());
+        txtname.setText(cg.getTenChuong());
+        cboTruyen.setSelectedItem(tr);
+    }
+
+    private void updateStatus() {
+        boolean edit = (this.row >= 0);
+        //trạng thái form
+        btnADD.setEnabled(!edit);
+        btnUpdate.setEnabled(edit);
+        btnDelete.setEnabled(edit);
+
+    }
+
+    private void clearForm() {
+        txtname.setText("");
+        this.row = -1;
+        this.updateStatus();
+    }
 }

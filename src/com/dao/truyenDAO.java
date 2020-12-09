@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public class truyenDAO {
     String insert_sql = "INSERT INTO dbo.truyenTranh( tacGia_id ,name , trangThai ,hinh ,gioiThieu)\n" +
-                        "VALUES  (?, ?, ?, ? ,?)";
+                        "VALUES  (?, ?, ?, ?,?)";
     String update_sql = "UPDATE dbo.truyenTranh SET tacGia_id = ?, name = ?, "
             + "trangThai = ?, hinh = ?, gioiThieu = ? WHERE id = ? ";
     String delete_sql = "DELETE dbo.truyenTranh WHERE id = ?";

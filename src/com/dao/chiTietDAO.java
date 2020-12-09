@@ -30,11 +30,11 @@ public class chiTietDAO {
         JDBCHelper.update(insert_sql,model.getId());
     }
     public List<chiTietTruyen> selectAll(){
-        String sql = "select * from truyenTranh";
+        String sql = "select * from chiTietTruyen";
         return this.selectBySQL(sql);
     }
     public chiTietTruyen selectByID(int id){
-        String sql = "select * from truyenTranh where id = ?";
+        String sql = "select * from chiTietTruyen where id = ?";
         List<chiTietTruyen> list = selectBySQL(sql, id);
         if(list.isEmpty()){
             return null;

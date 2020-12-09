@@ -45,7 +45,7 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
         List<tacGia> listTG = dao.selectAll();
         for (tacGia tg : listTG) {
             model.addRow(new Object[]{
-                tg.getId(),tg.getName(), tg.getEmail()
+                tg.getId(), tg.getName(), tg.getEmail()
             });
         }
     }
@@ -70,6 +70,7 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        btnDelete1 = new javax.swing.JButton();
 
         setClosable(true);
 
@@ -153,6 +154,14 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
             }
         });
 
+        btnDelete1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/Refresh.png"))); // NOI18N
+        btnDelete1.setText("Clear");
+        btnDelete1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelete1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,15 +182,18 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
                         .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(94, 94, 94)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)
-                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(79, 79, 79)
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(87, 87, 87)
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80)
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,8 +212,9 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                    .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDelete1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
@@ -217,7 +230,9 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        if(checkValidate()) return;
+        if (checkValidate()) {
+            return;
+        }
         update();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -234,10 +249,16 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
         delete();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete1ActionPerformed
+        // TODO add your handling code here:
+        clearForm();
+    }//GEN-LAST:event_btnDelete1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDelete1;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -293,6 +314,7 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
             dao.insert(tG);
             fillTable();
             MsgBox.alert(this, "Thêm thành công!");
+            clearForm();
         } catch (SQLException ex) {
             MsgBox.alert(this, "Thêm thất bại!");
             Logger.getLogger(QuanLyTacGia.class.getName()).log(Level.SEVERE, null, ex);
@@ -307,8 +329,7 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
+
         updateStatus();
     }
 
@@ -320,7 +341,8 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
         btnDelete.setEnabled(edit);
 
     }
-    private tacGia getTacGia(){
+
+    private tacGia getTacGia() {
         row = this.tblTG.getSelectedRow();
         int id = (int) tblTG.getValueAt(row, 0);
         tacGia tG = dao.selectByID(id);
@@ -328,6 +350,7 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
         tG.setEmail(txtemail.getText());
         return tG;
     }
+
     private void update() {
         tacGia tG = getTacGia();
         try {
@@ -342,7 +365,7 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
     }
 
     private void delete() {
-        MsgBox.comfirm(this, "Bạn có muốn xoá tác giả này?");        
+        MsgBox.comfirm(this, "Bạn có muốn xoá tác giả này?");
         int id = (int) tblTG.getValueAt(row, 0);
         tacGia tg = dao.selectByID(id);
         try {
@@ -355,9 +378,11 @@ public class QuanLyTacGia extends javax.swing.JInternalFrame {
             MsgBox.alert(this, "Xoá thất bại");
         }
     }
-    private void clearForm(){
+
+    private void clearForm() {
         txtName.setText("");
         txtemail.setText("");
         this.row = -1;
+        this.updateStatus();
     }
 }

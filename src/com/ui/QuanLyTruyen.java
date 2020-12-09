@@ -44,7 +44,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     tacGiaDAO tGDAO = new tacGiaDAO();
     theLoaiDAO tLDAO = new theLoaiDAO();
     chiTietDAO CTDAO = new chiTietDAO();
-    JFileChooser jfc = new JFileChooser("\\com\\imgStory");
+    JFileChooser jfc = new JFileChooser("E:\\DuAn1\\appDocTruyen\\src\\com\\imgStory");
     int row;
     List<Truyen> listTR = new ArrayList<>();
 
@@ -78,6 +78,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTruyen = new javax.swing.JTable();
@@ -163,6 +164,9 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel7.setText("Ảnh truyện");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -182,9 +186,15 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                             .addComponent(txtname, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cboTrangThai, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblIM, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
-                        .addGap(5, 5, 5))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblIM, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
+                                .addGap(5, 5, 5))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(97, 97, 97)
+                                .addComponent(jLabel7)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnADD, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(82, 82, 82)
@@ -198,12 +208,12 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(48, 48, 48)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cboTG, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,7 +228,9 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblIM, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -544,6 +556,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
+        clearForm();
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void txtSearchInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtSearchInputMethodTextChanged
@@ -582,7 +595,16 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     private void cboNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNameActionPerformed
         // TODO add your handling code here:
         Truyen tr = (Truyen) cboName.getSelectedItem();
+        if(tr== null){
+            return;
+        }
         List<chiTietTruyen> list = CTDAO.selectListByID(tr.getId());
+        fillTBTL(list);
+    }//GEN-LAST:event_cboNameActionPerformed
+    private void fillTBTL(List<chiTietTruyen> list){
+        if(list == null){
+            return;
+        }
         DefaultTableModel model = (DefaultTableModel) tblTL.getModel();
         model.setRowCount(0);
         for (chiTietTruyen ct : list) {
@@ -596,7 +618,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             }
 
         }
-    }//GEN-LAST:event_cboNameActionPerformed
+    }
     private void addImage() {
         if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jfc.getSelectedFile();
@@ -661,6 +683,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jList;
     private javax.swing.JPanel jPanel1;
@@ -689,6 +712,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         Dimension size = this.getSize();
         this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
         listTR = dao.selectAll();
+        
         fillToTable(listTR);
         try {
             fillToList();
@@ -762,6 +786,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             fillToTable(list);
             MsgBox.alert(this, "Thêm thành công");
             tabs.setSelectedIndex(2);
+            fillCBoTR();
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -788,6 +813,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             dao.update(tr);
             fillToTable(listTR);
             MsgBox.alert(this, "Update sucsses!");
+            clearForm();
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -798,6 +824,10 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         Truyen tr = dao.selectByID(id);
         try {
             dao.delete(tr);
+            listTR = dao.selectAll();
+            fillToTable(listTR);
+            MsgBox.alert(this, "Xoá thành công");
+            clearForm();
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -810,5 +840,12 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         for (Truyen tr : list) {
             model.addElement(tr);
         }
+        cboName.setModel(model);
+    }
+    private void clearForm(){
+        txtname.setText("");
+        txaGT.setText("");       
+        this.row = -1;
+        this.updateStatus();
     }
 }

@@ -11,6 +11,7 @@ import com.dao.truyenDAO;
 import com.models.Chuong;
 import com.models.Truyen;
 import static com.ui.ThongTinTruyen.nameChuong;
+import com.utils.MsgBox;
 import java.io.FileOutputStream;
 import java.util.Base64;
 import java.util.List;
@@ -109,34 +110,35 @@ public class PDFform extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> cboChuong;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    public void loadPDF() {       
+    public void loadPDF() {
         String nameTr = mainForm.name;
         String nameCG = nameChuong;
         Chuong cg = new Chuong();
-        if(nameCG.isEmpty()){
+        if (nameCG.isEmpty()) {
             Truyen tr = tRDAO.selectByName(nameTr);
             List<Chuong> list = cDAO.selectByTID(tr.getId());
-            if(list == null){
+            if (list == null) {
+
                 return;
             }
             cg = list.get(0);
-        }
-        else{
+        } else {
             cg = cDAO.selectByName(nameCG);
-            if(cg == null){
+            if (cg == null) {
                 return;
             }
         }
         String base64 = cg.getFilePDF();
-        String pdf = "src//com//chapter//"+cg.getTenChuong()+".pdf";
-        try (FileOutputStream imgOutFile = new FileOutputStream(pdf)){
+        String pdf = "src//com//chapter//chapter.pdf";
+        try (FileOutputStream imgOutFile = new FileOutputStream(pdf)) {
             //convert from String to  Image
-            byte [] imgByteArray = Base64.getDecoder().decode(base64);
+            byte[] imgByteArray = Base64.getDecoder().decode(base64);
             imgOutFile.write(imgByteArray);
         } catch (Exception e) {
             System.out.println("loi");
-        }       
+        }
         openpdf(pdf);
+
     }
 
     void openpdf(String file) {
@@ -155,7 +157,8 @@ public class PDFform extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Cannot Load Pdf");
         }
     }
-    private void loadCBO(){
-        
+
+    private void loadCBO() {
+
     }
 }
