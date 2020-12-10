@@ -56,5 +56,10 @@ public class Chuong {
     public void setFilePDF(String filePDF) {
         this.filePDF = filePDF;
     }
+
+    @Override
+    public String toString() {
+        return this.tenChuong;
+    }
     
 }

@@ -109,8 +109,6 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Tác giả");
 
-        cboTG.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Trạng thái");
@@ -188,20 +186,20 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblIM, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)
-                                .addGap(5, 5, 5))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(97, 97, 97)
                                 .addComponent(jLabel7)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblIM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnADD, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(82, 82, 82)
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(87, 87, 87)
                         .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                         .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(41, 41, 41))))
         );
@@ -370,6 +368,11 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                 "Tên thể loại"
             }
         ));
+        tblTL.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTLMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblTL);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -484,7 +487,13 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) tblTruyen.getModel();
         model.setRowCount(0);
         for (Truyen tr : Data) {
+            if(tr == null){
+                return;
+            }
             tacGia tg = tGDAO.selectByID(tr.getTacGia());
+            if(tg == null){
+                return;
+            }
             model.addRow(new Object[]{
                 tr.getId(), tr.getName(), tg.getName(), tr.getTrangThai() ? "Hoàn thành" : "Đang cập nhật"
             });
@@ -536,11 +545,13 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             return;
         }
         update();
+        fill();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:      
         delete();
+        fill();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void jListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListMouseClicked
@@ -550,6 +561,8 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
                 return;
             }
             insertCT();
+            List<chiTietTruyen> list = CTDAO.selectAll();
+            fillTBTL(list);
             fill();
         }
     }//GEN-LAST:event_jListMouseClicked
@@ -601,6 +614,10 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         List<chiTietTruyen> list = CTDAO.selectListByID(tr.getId());
         fillTBTL(list);
     }//GEN-LAST:event_cboNameActionPerformed
+
+    private void tblTLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTLMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblTLMouseClicked
     private void fillTBTL(List<chiTietTruyen> list){
         if(list == null){
             return;
@@ -622,6 +639,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     private void addImage() {
         if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jfc.getSelectedFile();
+            XImage.save(file);
             ImageIcon icon = XImage.read(file.getName());
             lblIM.setIcon(icon);
             lblIM.setToolTipText(file.getName());
@@ -756,15 +774,17 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             cboTrangThai.setSelectedIndex(1);
         }
         tacGia tg = tGDAO.selectByID(tr.getTacGia());
-        cboTG.setSelectedItem(tg.getName());
+        cboTG.removeAllItems();
+        cboTG.addItem(tg.getName());
+
         if (tr.getHinh() != null) {
-            lblIM.setToolTipText(tr.getHinh());
-            lblIM.setIcon(XImage.read(tr.getHinh()));
+            lblIM.setIcon(new ImageIcon("E:\\DuAn1\\appDocTruyen\\src\\com\\imgStory\\" + tr.getHinh()));
         }
     }
-
+    
     private void edit() {
         int id = (int) tblTruyen.getValueAt(row, 0);
+        System.out.println(id);
         Truyen tr = dao.selectByID(id);
         this.setModel(tr);
         tabs.setSelectedIndex(0);
@@ -843,8 +863,9 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         cboName.setModel(model);
     }
     private void clearForm(){
-        txtname.setText("");
-        txaGT.setText("");       
+        Truyen tr = new Truyen();
+        this.setModel(tr);
+        lblIM.setIcon(null);
         this.row = -1;
         this.updateStatus();
     }

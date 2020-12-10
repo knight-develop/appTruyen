@@ -26,6 +26,7 @@ public class mainForm extends javax.swing.JFrame {
     public static truyenDAO tRDAO = new truyenDAO();
     public static String name = "";
     public static DefaultListModel model= new DefaultListModel();
+    public static boolean flag = false;
     public mainForm() {
         initComponents();
         mnuTG.setVisible(false);
@@ -99,6 +100,11 @@ public class mainForm extends javax.swing.JFrame {
         btnSearch.setText("Tìm kiếm");
         btnSearch.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSearch.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -196,6 +202,11 @@ public class mainForm extends javax.swing.JFrame {
         btnCate.setText("Thể loại");
         btnCate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnCate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCateActionPerformed(evt);
+            }
+        });
 
         jSeparator5.setBackground(new java.awt.Color(0, 0, 0));
         jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -459,6 +470,7 @@ public class mainForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (Auth.user == null) {
             MsgBox.alert(this, "Bạn cần đăng nhập để thực hiện chức năng");
+            return;
         }
     }//GEN-LAST:event_btnFolowActionPerformed
 
@@ -468,6 +480,22 @@ public class mainForm extends javax.swing.JFrame {
         Desktop1.add(ls);
         ls.setVisible(true);
     }//GEN-LAST:event_btnHistoryActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        flag = false;
+        timKiem tk = new timKiem();
+        Desktop1.add(tk);
+        tk.setVisible(true);
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnCateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCateActionPerformed
+        // TODO add your handling code here:
+        flag = true;
+        timKiem tk = new timKiem();
+        Desktop1.add(tk);
+        tk.setVisible(true);
+    }//GEN-LAST:event_btnCateActionPerformed
 
     /**
      * @param args the command line arguments

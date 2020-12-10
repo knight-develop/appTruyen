@@ -11,7 +11,9 @@ import com.dao.truyenDAO;
 import com.models.Truyen;
 import com.models.chiTietTruyen;
 import com.models.theLoai;
+import static com.ui.mainForm.flag;
 import com.utils.Renderer;
+import java.awt.Event;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class timKiem extends javax.swing.JInternalFrame {
     truyenDAO trDA0 = new truyenDAO();
     public timKiem() {
         initComponents();
+        
     }
 
     /**
@@ -51,10 +54,24 @@ public class timKiem extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listTruyen = new javax.swing.JList<>();
 
+        setClosable(true);
+
+        txtname.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtnameKeyReleased(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Tên truyện");
 
+        listTruyen.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         listTruyen.setModel(new DefaultListModel());
+        listTruyen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listTruyenMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listTruyen);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -65,10 +82,10 @@ public class timKiem extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(54, 54, 54)
-                .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(186, 186, 186))
+                .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(240, 240, 240))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 845, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -79,11 +96,21 @@ public class timKiem extends javax.swing.JInternalFrame {
                     .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtnameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnameKeyReleased
+        // TODO add your handling code here:
+        fill();
+    }//GEN-LAST:event_txtnameKeyReleased
+
+    private void listTruyenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listTruyenMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_listTruyenMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -95,7 +122,8 @@ public class timKiem extends javax.swing.JInternalFrame {
     private List<Truyen> role(){      
         String name = txtname.getText();
         List<Truyen> listTR = new ArrayList<>();
-        if(mainForm.btnCate.isSelected()){          
+        
+        if(flag == true){          
             try {
                 theLoai tl = tDAO.getIDByName(name);
                 if(tl == null){

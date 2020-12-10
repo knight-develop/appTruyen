@@ -25,7 +25,7 @@ public class XImage {
     }
     
     public static void save(File src){
-        File dst = new File("logos", src.getName());
+        File dst = new File("imgStory", src.getName());
         if(!dst.getParentFile().exists()){
             dst.getParentFile().mkdirs();
         }

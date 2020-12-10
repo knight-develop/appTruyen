@@ -29,8 +29,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
-
+import static com.ui.PDFform.flag2;
 /**
  *
  * @author admin
@@ -50,11 +51,12 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
     DefaultListModel model = new DefaultListModel();
     String name = mainForm.name;
     public static String nameChuong = "";
-    public static int i;
+    public static boolean flag1;
+    public static int index;
     public ThongTinTruyen() {
         initComponents();
         init();
-        
+
         add();
     }
 
@@ -108,9 +110,11 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 121, Short.MAX_VALUE)
+            .addGap(0, 176, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(lblIMG, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addComponent(lblIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -189,6 +193,11 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
 
         btnFollow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/heart.png"))); // NOI18N
         btnFollow.setText("Theo dõi");
+        btnFollow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFollowActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -256,7 +265,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -280,32 +289,47 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         // TODO add your handling code here:
+        flag2 = false;
         Truyen tr = dao.selectByName(name);
-            List<Chuong> list = cDAO.selectByTID(tr.getId());
-            if(list == null){
-                MsgBox.alert(this, "Truyện đang được cập nhật");
-                return;
-            }
+        List<Chuong> list = cDAO.selectByTID(tr.getId());
+        if (list == null) {
+            MsgBox.alert(this, "Truyện đang được cập nhật");
+            return;
+        }
+        flag1 = true;
         PDFform pdf = new PDFform();
         Desktop1.add(pdf);
         pdf.setVisible(true);
-        if(check())return;
+        if (check()) {
+            return;
+        }
         addHis();
     }//GEN-LAST:event_btnReadActionPerformed
 
     private void listCgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCgMouseClicked
-        // TODO add your handling code here:
-        readChuong();
+        // TODO add your handling code here:       
+        flag1 = false;
+        flag2 = false;
+        nameChuong = String.valueOf(listCg.getSelectedValue());
+        index = listCg.getSelectedIndex();
+        System.out.println(index);
+        System.out.println(nameChuong);
         PDFform pdf = new PDFform();
         Desktop1.add(pdf);
         pdf.setVisible(true);
-        if(check())return;
+        if (check()) {
+            return;
+        }
         addHis();
-        
+
     }//GEN-LAST:event_listCgMouseClicked
+
+    private void btnFollowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFollowActionPerformed
+        
+    }//GEN-LAST:event_btnFollowActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -338,17 +362,17 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
         model = (DefaultListModel) listCg.getModel();
         txaGT.setColumns(20);
-        txaGT.setLineWrap(true); 
-        txaGT.setRows(5); 
+        txaGT.setLineWrap(true);
+        txaGT.setRows(5);
         txaGT.setWrapStyleWord(true);
         jScrollPane4.setViewportView(txaGT);
         fillToList();
     }
 
     private void add() {
-        
+
         Truyen tr = dao.selectByName(name);
-        if(tr == null){
+        if (tr == null) {
             return;
         }
         txtName.setText(tr.getName());
@@ -358,9 +382,9 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         tacGia tg = tGDAO.selectByID(tr.getTacGia());
         txtTacGia.setText(tg.getName());
         txaGT.setText(tr.getGioiThieu());
-        
+
         List<Chuong> list = cDAO.selectByTID(tr.getId());
-            if (list == null) {
+        if (list == null) {
             model.addElement(null);
         } else {
             for (Chuong c : list) {
@@ -368,26 +392,24 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
             }
             listCg.setModel(model);
         }
-
         if (tr.getHinh() != null) {
-            lblIMG.setToolTipText(tr.getHinh());
-            lblIMG.setIcon(XImage.read(tr.getHinh()));
+            lblIMG.setIcon(new ImageIcon("E:\\DuAn1\\appDocTruyen\\src\\com\\imgStory\\" + tr.getHinh()));
         }
     }
 
     private void fillToList() {
         Truyen tr = dao.selectByName(name);
-        if(tr == null){
+        if (tr == null) {
             return;
         }
         List<chiTietTruyen> list = cTDAO.selectListByID(tr.getId());
-        if(list == null){
+        if (list == null) {
             return;
         }
         DefaultListModel model = (DefaultListModel) listTl.getModel();
         model.clear();
 
-        for (chiTietTruyen cT :list) {
+        for (chiTietTruyen cT : list) {
 
             try {
                 theLoai tL = tLDAO.selectByID(cT.getTheLoai());
@@ -398,12 +420,13 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         }
 
     }
-    private boolean check(){
+
+    private boolean check() {
         try {
             listHS = hDAO.selectAll();
             Truyen tr = dao.selectByName(name);
-            for(History hs :listHS){
-                if(tr.getId() == hs.getTruyen_id()){
+            for (History hs : listHS) {
+                if (tr.getId() == hs.getTruyen_id()) {
                     return true;
                 }
             }
@@ -412,14 +435,15 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         }
         return false;
     }
-    
-    private void addHis(){
+
+    private void addHis() {
         Truyen tr = dao.selectByName(name);
         History hs = new History();
         hs.setTruyen_id(tr.getId());
         hDAO.insert(hs);
     }
-    private void readChuong(){
-        nameChuong = String.valueOf(listCg.getSelectedValue());             
+
+    private void readChuong() {
+
     }
 }

@@ -10,11 +10,16 @@ import com.dao.chuongDAO;
 import com.dao.truyenDAO;
 import com.models.Chuong;
 import com.models.Truyen;
+import static com.ui.ThongTinTruyen.flag1;
+import static com.ui.ThongTinTruyen.index;
 import static com.ui.ThongTinTruyen.nameChuong;
+import static com.ui.mainForm.flag;
 import com.utils.MsgBox;
+import java.awt.Frame;
 import java.io.FileOutputStream;
 import java.util.Base64;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.icepdf.ri.common.ComponentKeyBinding;
@@ -32,10 +37,13 @@ public class PDFform extends javax.swing.JInternalFrame {
      */
     chuongDAO cDAO = new chuongDAO();
     truyenDAO tRDAO = new truyenDAO();
+    public static boolean flag2 = true;
 
     public PDFform() {
         initComponents();
+        fillCbo();
         loadPDF();
+        
     }
 
     /**
@@ -54,12 +62,33 @@ public class PDFform extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setMaximizable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         btnPre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/previous.png"))); // NOI18N
 
         btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/next.png"))); // NOI18N
 
-        cboChuong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chương 1" }));
+        cboChuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cboChuongMouseClicked(evt);
+            }
+        });
         cboChuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboChuongActionPerformed(evt);
@@ -101,7 +130,22 @@ public class PDFform extends javax.swing.JInternalFrame {
 
     private void cboChuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboChuongActionPerformed
         // TODO add your handling code here:
+        
+
+            Chuong cg = (Chuong) cboChuong.getSelectedItem();
+            load2(cg);
     }//GEN-LAST:event_cboChuongActionPerformed
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formInternalFrameClosed
+
+    private void cboChuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboChuongMouseClicked
+        // TODO add your handling code here:
+        
+        System.out.println("abc");
+    }//GEN-LAST:event_cboChuongMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -111,19 +155,21 @@ public class PDFform extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     public void loadPDF() {
+        
         String nameTr = mainForm.name;
         String nameCG = nameChuong;
         Chuong cg = new Chuong();
-        if (nameCG.isEmpty()) {
+        if (flag1 == true) {
             Truyen tr = tRDAO.selectByName(nameTr);
             List<Chuong> list = cDAO.selectByTID(tr.getId());
             if (list == null) {
-
                 return;
             }
             cg = list.get(0);
+            cboChuong.setSelectedIndex(0);
         } else {
             cg = cDAO.selectByName(nameCG);
+            cboChuong.setSelectedIndex(index);
             if (cg == null) {
                 return;
             }
@@ -138,7 +184,6 @@ public class PDFform extends javax.swing.JInternalFrame {
             System.out.println("loi");
         }
         openpdf(pdf);
-
     }
 
     void openpdf(String file) {
@@ -158,7 +203,37 @@ public class PDFform extends javax.swing.JInternalFrame {
         }
     }
 
-    private void loadCBO() {
+    private void load2(Chuong cg) {
 
+        String base64 = cg.getFilePDF();
+        String pdf = "src//com//chapter//chapter.pdf";
+        try (FileOutputStream imgOutFile = new FileOutputStream(pdf)) {
+            //convert from String to  Image
+            byte[] imgByteArray = Base64.getDecoder().decode(base64);
+            imgOutFile.write(imgByteArray);
+        } catch (Exception e) {
+            System.out.println("loi");
+        }
+        openpdf(pdf);
+    }
+
+    private void fillCbo() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboChuong.getModel();
+        String name = mainForm.name;
+        Truyen tr = tRDAO.selectByName(name);
+        List<Chuong> list = cDAO.selectByTID(tr.getId());
+        model.removeAllElements();
+        for (Chuong cg : list) {
+            model.addElement(cg);
+        }
+    }
+
+    private void next() {
+        
+        if(index < cboChuong.getItemCount() -1 ){
+            index++;
+        }
+        
+        
     }
 }

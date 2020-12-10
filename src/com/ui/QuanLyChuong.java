@@ -91,8 +91,6 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Tên truyện");
 
-        cboTruyen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("File truyện");
@@ -280,7 +278,6 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
     private void fillTable(List<Chuong> Data) {
         DefaultTableModel model = (DefaultTableModel) tblChuong.getModel();
         model.setRowCount(0);
-        Data = dao.selectAll();
         if (Data.isEmpty()) {
             return;
         }
@@ -299,7 +296,8 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         }
         for (Truyen tr : list) {           
             model.addElement(tr);
-        }
+            System.out.println(tr);
+        }      
     }
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
         // TODO add your handling code here:
@@ -394,6 +392,7 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         List<Chuong> list = dao.selectAll();
         fillToCBO();
         fillTable(list);
+        fillCBO();
     }
 
     private void fillToCBO() {
@@ -415,7 +414,8 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
     }
 
     private boolean checkValidate() {
-        List<Chuong> list = dao.selectAll();
+        Truyen tr = (Truyen) cboTruyen.getSelectedItem();
+        List<Chuong> list = dao.selectByTID(tr.getId());
         if (txtname.getText().isEmpty()) {
             MsgBox.alert(this, "Tên chương đang trống");
             return true;

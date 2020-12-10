@@ -60,6 +60,9 @@ public class theLoaiDAO {
     public theLoai getIDByName(Object name) throws SQLException{
         String sql = "select * from theLoai where name = ?";
         List<theLoai> tL = selectBySql(sql, name);
+        if(tL.isEmpty()){
+            return null;
+        }
         return tL.get(0);
     }
 }

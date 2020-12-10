@@ -91,6 +91,7 @@ public class Login extends javax.swing.JInternalFrame {
         lbluser.setText("Username");
 
         txtuser.setFont(new java.awt.Font("Berlin Sans FB", 0, 18)); // NOI18N
+        txtuser.setText("nv001");
         txtuser.setBorder(null);
         txtuser.setOpaque(false);
         txtuser.addActionListener(new java.awt.event.ActionListener() {
@@ -104,6 +105,7 @@ public class Login extends javax.swing.JInternalFrame {
         lblpass.setText("Password");
 
         txtpass.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        txtpass.setText("12345");
         txtpass.setBorder(null);
         txtpass.setOpaque(false);
 
