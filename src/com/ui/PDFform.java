@@ -15,11 +15,13 @@ import static com.ui.ThongTinTruyen.index;
 import static com.ui.ThongTinTruyen.nameChuong;
 import static com.ui.mainForm.flag;
 import com.utils.MsgBox;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.io.FileOutputStream;
 import java.util.Base64;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.icepdf.ri.common.ComponentKeyBinding;
@@ -37,10 +39,10 @@ public class PDFform extends javax.swing.JInternalFrame {
      */
     chuongDAO cDAO = new chuongDAO();
     truyenDAO tRDAO = new truyenDAO();
-    public static boolean flag2 = true;
 
     public PDFform() {
         initComponents();
+        init();
         fillCbo();
         loadPDF();
         
@@ -84,6 +86,7 @@ public class PDFform extends javax.swing.JInternalFrame {
 
         btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/next.png"))); // NOI18N
 
+        cboChuong.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         cboChuong.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cboChuongMouseClicked(evt);
@@ -104,13 +107,13 @@ public class PDFform extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1229, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(495, 495, 495)
-                .addComponent(btnPre)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(462, 462, 462)
+                .addComponent(btnPre, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(cboChuong, 0, 168, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNext)
-                .addGap(462, 462, 462))
+                .addGap(18, 18, 18)
+                .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(428, 428, 428))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +124,7 @@ public class PDFform extends javax.swing.JInternalFrame {
                     .addComponent(btnPre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cboChuong, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -235,5 +238,12 @@ public class PDFform extends javax.swing.JInternalFrame {
         }
         
         
+    }
+
+    private void init() {
+        JDesktopPane Desktop1 = mainForm.Desktop1;
+        Dimension size1 = Desktop1.getSize();
+        Dimension size = this.getSize();
+        this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
     }
 }

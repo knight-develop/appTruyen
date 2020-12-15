@@ -74,6 +74,7 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         cboSearch = new javax.swing.JComboBox<>();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
 
         lbltitle.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N

@@ -17,7 +17,7 @@ import java.util.List;
  * @author admin
  */
 public class HISDAO {
-    String insert_sql = "INSERT dbo.lichSu( truyen_id )VALUES  (?)";
+    String insert_sql = "INSERT dbo.lichSu( user_id,truyen_id )VALUES  (?,?)";
     String delete_sql = "DELETE FROM dbo.lichSu WHERE truyen_id = ?";
     public void insert(History hs){
         JDBCHelper.update(insert_sql,hs.getTruyen_id());

@@ -19,6 +19,7 @@ import com.models.tacGia;
 import com.models.theLoai;
 import com.ui.mainForm;
 import static com.ui.mainForm.Desktop1;
+import com.utils.Auth;
 import com.utils.MsgBox;
 
 import com.utils.XImage;
@@ -31,7 +32,6 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
-import static com.ui.PDFform.flag2;
 /**
  *
  * @author admin
@@ -92,6 +92,8 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         btnFollow = new javax.swing.JButton();
 
         setClosable(true);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Thông tin truyện");
@@ -292,7 +294,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
 
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         // TODO add your handling code here:
-        flag2 = false;
+
         Truyen tr = dao.selectByName(name);
         List<Chuong> list = cDAO.selectByTID(tr.getId());
         if (list == null) {
@@ -312,7 +314,6 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
     private void listCgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCgMouseClicked
         // TODO add your handling code here:       
         flag1 = false;
-        flag2 = false;
         nameChuong = String.valueOf(listCg.getSelectedValue());
         index = listCg.getSelectedIndex();
         System.out.println(index);
@@ -440,10 +441,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         Truyen tr = dao.selectByName(name);
         History hs = new History();
         hs.setTruyen_id(tr.getId());
+        hs.setUser_id(Auth.user.getId());
         hDAO.insert(hs);
-    }
-
-    private void readChuong() {
-
     }
 }

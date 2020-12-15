@@ -235,15 +235,17 @@ public class Login extends javax.swing.JInternalFrame {
                 MsgBox.alert(this, "Sai mật khẩu");
             } else {
                 Auth.user = us;
+                MsgBox.alert(this, "Đăng nhập thành công");
                 if (Auth.isManager()) {
                     mnuTG.setVisible(true);
                     mnuHT.setVisible(true);
                     mnuTL.setVisible(true);
                     mnuTruyen.setVisible(true);
                 } else {
-
-                    mnuHT.setVisible(false);
-
+                    mnuTG.setVisible(false);
+                    mnuTL.setVisible(false);
+                    mnuTruyen.setVisible(false);
+                    mnuHT.setVisible(true);
                 }
                 this.dispose();
             }

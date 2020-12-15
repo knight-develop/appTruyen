@@ -19,6 +19,8 @@ import com.utils.MsgBox;
 import com.utils.XImage;
 import java.awt.Dimension;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +99,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lbltitle1 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
 
         tabs.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -473,7 +476,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(75, 75, 75)
                 .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 566, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(23, 23, 23)
@@ -487,11 +490,11 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         DefaultTableModel model = (DefaultTableModel) tblTruyen.getModel();
         model.setRowCount(0);
         for (Truyen tr : Data) {
-            if(tr == null){
+            if (tr == null) {
                 return;
             }
             tacGia tg = tGDAO.selectByID(tr.getTacGia());
-            if(tg == null){
+            if (tg == null) {
                 return;
             }
             model.addRow(new Object[]{
@@ -608,7 +611,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     private void cboNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNameActionPerformed
         // TODO add your handling code here:
         Truyen tr = (Truyen) cboName.getSelectedItem();
-        if(tr== null){
+        if (tr == null) {
             return;
         }
         List<chiTietTruyen> list = CTDAO.selectListByID(tr.getId());
@@ -618,8 +621,8 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     private void tblTLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTLMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tblTLMouseClicked
-    private void fillTBTL(List<chiTietTruyen> list){
-        if(list == null){
+    private void fillTBTL(List<chiTietTruyen> list) {
+        if (list == null) {
             return;
         }
         DefaultTableModel model = (DefaultTableModel) tblTL.getModel();
@@ -636,6 +639,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
         }
     }
+
     private void addImage() {
         if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jfc.getSelectedFile();
@@ -730,7 +734,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         Dimension size = this.getSize();
         this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
         listTR = dao.selectAll();
-        
+
         fillToTable(listTR);
         try {
             fillToList();
@@ -747,6 +751,12 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         if (txtname.getText().isEmpty() || txaGT.getText().isEmpty() || lblIM.getToolTipText().isEmpty()) {
             MsgBox.alert(this, "Điền thông tin và chọn ảnh");
             return true;
+        }
+        for (Truyen tr : listTR) {
+            if (tr.getName().equals(txtname.getText())) {
+                MsgBox.alert(this, "Tên truyện đã tồn tại");
+                return true;
+            }
         }
         return false;
     }
@@ -781,7 +791,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
             lblIM.setIcon(new ImageIcon("E:\\DuAn1\\appDocTruyen\\src\\com\\imgStory\\" + tr.getHinh()));
         }
     }
-    
+
     private void edit() {
         int id = (int) tblTruyen.getValueAt(row, 0);
         System.out.println(id);
@@ -862,7 +872,8 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         }
         cboName.setModel(model);
     }
-    private void clearForm(){
+
+    private void clearForm() {
         Truyen tr = new Truyen();
         this.setModel(tr);
         lblIM.setIcon(null);
