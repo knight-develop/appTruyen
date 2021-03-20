@@ -12,13 +12,29 @@ import javax.swing.Icon;
  * @author admin
  */
 public class Truyen {
-    private int id,tacGia;
+    private int id,tacGia,views;
     private String name, gioiThieu, hinh;
     private boolean trangThai;
     private Icon image;
     public Truyen() {
     }
 
+    public Truyen(int views, String name, Icon image) {
+        this.views = views;
+        this.name = name;
+        this.image = image;
+    }
+
+
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
+    
     public Truyen(String name, Icon image) {
         this.name = name;
         this.image = image;

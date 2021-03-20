@@ -25,6 +25,7 @@ public class truyenDAO {
     String update_sql = "UPDATE dbo.truyenTranh SET tacGia_id = ?, name = ?, "
             + "trangThai = ?, hinh = ?, gioiThieu = ? WHERE id = ? ";
     String delete_sql = "DELETE dbo.truyenTranh WHERE id = ?";
+    String insert_views = "update truyenTranh set views = ? where id = ?";
     public void insert(Truyen model) throws SQLException{
         JDBCHelper.update(insert_sql, model.getTacGia(), model.getName(),model.getTrangThai(), model.getHinh(), model.getGioiThieu());
     }
@@ -33,6 +34,9 @@ public class truyenDAO {
     }
     public void delete(Truyen model) throws SQLException{
         JDBCHelper.update(delete_sql,model.getId());
+    }
+    public void addViews(Truyen model){
+        JDBCHelper.update(insert_views,model.getViews(),model.getId());
     }
     public List<Truyen> selectAll(){
         String sql = "select * from truyenTranh";
@@ -57,6 +61,7 @@ public class truyenDAO {
                 model.setTacGia(rs.getInt("tacGia_id"));
                 model.setHinh(rs.getString("hinh"));
                 model.setGioiThieu(rs.getString("gioiThieu"));
+                model.setViews(rs.getInt("Views"));
                 model.setName(rs.getString("Name"));
                 model.setTrangThai(rs.getBoolean("trangThai"));
                 list.add(model);
@@ -75,5 +80,13 @@ public class truyenDAO {
             return null;
         }
         return list.get(0);
+    }
+    public List<Truyen> selectTop10(){
+        String sql = "select top 10 * from truyenTranh";
+        List<Truyen> list = selectBySQL(sql);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list;
     }
 }

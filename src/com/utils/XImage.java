@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
  */
 public class XImage {
     public static Image getAppIcon() {
-        URL url = XImage.class.getResource("/com/edusys/icon/fpt.png");
+        URL url = XImage.class.getResource("/com/image/iconChao.jpg");
         return new ImageIcon(url).getImage();
     }
     
@@ -39,6 +39,23 @@ public class XImage {
     }
     public static ImageIcon read(String fileName){
         File path = new File("imgStory", fileName);
+        return new ImageIcon(path.getAbsolutePath());
+    }
+    public static void savePDF(File src){
+        File dst = new File("chapter", src.getName());
+        if(!dst.getParentFile().exists()){
+            dst.getParentFile().mkdirs();
+        }
+        try {
+            Path from = Paths.get(src.getAbsolutePath());
+            Path to = Paths.get(dst.getAbsolutePath());
+            Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static ImageIcon readPDF(String fileName){
+        File path = new File("chapter", fileName);
         return new ImageIcon(path.getAbsolutePath());
     }
 }

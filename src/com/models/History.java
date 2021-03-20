@@ -21,6 +21,8 @@ public class History {
         this.user_id = user_id;
     }
 
+    
+
     public int getId() {
         return id;
     }

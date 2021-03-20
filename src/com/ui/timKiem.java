@@ -13,6 +13,7 @@ import com.models.chiTietTruyen;
 import com.models.theLoai;
 import static com.ui.mainForm.flag;
 import com.utils.Renderer;
+import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 
 /**
  *
@@ -37,7 +39,7 @@ public class timKiem extends javax.swing.JInternalFrame {
     truyenDAO trDA0 = new truyenDAO();
     public timKiem() {
         initComponents();
-        
+        init();
     }
 
     /**
@@ -56,6 +58,8 @@ public class timKiem extends javax.swing.JInternalFrame {
 
         setClosable(true);
 
+        txtname.setBackground(new java.awt.Color(204, 204, 255));
+        txtname.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         txtname.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtnameKeyReleased(evt);
@@ -63,7 +67,8 @@ public class timKiem extends javax.swing.JInternalFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Tên truyện");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/search.png"))); // NOI18N
+        jLabel1.setText("Tìm kiếm");
 
         listTruyen.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         listTruyen.setModel(new DefaultListModel());
@@ -81,9 +86,9 @@ public class timKiem extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(54, 54, 54)
+                .addGap(29, 29, 29)
                 .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(240, 240, 240))
+                .addGap(248, 248, 248))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 845, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -91,12 +96,12 @@ public class timKiem extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
         );
 
         pack();
@@ -162,5 +167,12 @@ public class timKiem extends javax.swing.JInternalFrame {
         }
         listTruyen.setCellRenderer(new Renderer());
         listTruyen.setModel(model);
+    }
+
+    private void init() {
+        JDesktopPane Desktop1 = mainForm.Desktop1;
+        Dimension size1 = Desktop1.getSize();
+        Dimension size = this.getSize();
+        this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
     }
 }

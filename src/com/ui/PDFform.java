@@ -17,6 +17,7 @@ import static com.ui.mainForm.flag;
 import com.utils.MsgBox;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Base64;
 import java.util.List;
@@ -45,7 +46,7 @@ public class PDFform extends javax.swing.JInternalFrame {
         init();
         fillCbo();
         loadPDF();
-        
+
     }
 
     /**
@@ -83,8 +84,18 @@ public class PDFform extends javax.swing.JInternalFrame {
         });
 
         btnPre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/previous.png"))); // NOI18N
+        btnPre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreActionPerformed(evt);
+            }
+        });
 
         btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/image/next.png"))); // NOI18N
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
 
         cboChuong.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         cboChuong.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -133,10 +144,8 @@ public class PDFform extends javax.swing.JInternalFrame {
 
     private void cboChuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboChuongActionPerformed
         // TODO add your handling code here:
-        
+        loadCG();
 
-            Chuong cg = (Chuong) cboChuong.getSelectedItem();
-            load2(cg);
     }//GEN-LAST:event_cboChuongActionPerformed
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
@@ -146,9 +155,20 @@ public class PDFform extends javax.swing.JInternalFrame {
 
     private void cboChuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cboChuongMouseClicked
         // TODO add your handling code here:
-        
-        System.out.println("abc");
+
+
     }//GEN-LAST:event_cboChuongMouseClicked
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        // TODO add your handling code here:
+        next();
+
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnPreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreActionPerformed
+        // TODO add your handling code here:
+        pre();
+    }//GEN-LAST:event_btnPreActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -158,7 +178,7 @@ public class PDFform extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     public void loadPDF() {
-        
+
         String nameTr = mainForm.name;
         String nameCG = nameChuong;
         Chuong cg = new Chuong();
@@ -178,13 +198,13 @@ public class PDFform extends javax.swing.JInternalFrame {
             }
         }
         String base64 = cg.getFilePDF();
-        String pdf = "src//com//chapter//chapter.pdf";
-        try (FileOutputStream imgOutFile = new FileOutputStream(pdf)) {
+        String pdf = "loadchapter//chapter.pdf";
+        File file = new File(pdf);
+        try (FileOutputStream imgOutFile = new FileOutputStream(file)) {
             //convert from String to  Image
             byte[] imgByteArray = Base64.getDecoder().decode(base64);
             imgOutFile.write(imgByteArray);
         } catch (Exception e) {
-            System.out.println("loi");
         }
         openpdf(pdf);
     }
@@ -209,7 +229,7 @@ public class PDFform extends javax.swing.JInternalFrame {
     private void load2(Chuong cg) {
 
         String base64 = cg.getFilePDF();
-        String pdf = "src//com//chapter//chapter.pdf";
+        String pdf = "loadchapter//chapter.pdf";
         try (FileOutputStream imgOutFile = new FileOutputStream(pdf)) {
             //convert from String to  Image
             byte[] imgByteArray = Base64.getDecoder().decode(base64);
@@ -232,12 +252,33 @@ public class PDFform extends javax.swing.JInternalFrame {
     }
 
     private void next() {
-        
-        if(index < cboChuong.getItemCount() -1 ){
+        int a = cboChuong.getItemCount() - 1;
+        if (index < cboChuong.getItemCount() - 1) {
             index++;
+            cboChuong.setSelectedIndex(index);
+            loadCG();
+            btnPre.setEnabled(true);
+        } else if(cboChuong.getSelectedIndex()==a){
+            btnNext.setEnabled(false);
         }
-        
-        
+
+    }
+
+    private void pre() {
+
+        if (index > 0) {
+            index--;
+            cboChuong.setSelectedIndex(index);
+            loadCG();
+            btnNext.setEnabled(true);
+        } else if(cboChuong.getSelectedIndex()== 0) {
+            btnPre.setEnabled(false);
+        }
+    }
+
+    private void loadCG() {
+        Chuong cg = (Chuong) cboChuong.getSelectedItem();
+        load2(cg);
     }
 
     private void init() {
@@ -246,4 +287,5 @@ public class PDFform extends javax.swing.JInternalFrame {
         Dimension size = this.getSize();
         this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
     }
+
 }

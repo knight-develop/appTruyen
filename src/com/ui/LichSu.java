@@ -13,6 +13,7 @@ import com.models.Truyen;
 import static com.ui.mainForm.Desktop1;
 import static com.ui.mainForm.name;
 import com.utils.Renderer;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 
 /**
  *
@@ -33,6 +35,7 @@ public class LichSu extends javax.swing.JInternalFrame {
     truyenDAO tdao = new truyenDAO();
     public LichSu()  {
         initComponents();
+        init();
         fill();
     }
 
@@ -58,6 +61,7 @@ public class LichSu extends javax.swing.JInternalFrame {
         lbltitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbltitle.setText("Lịch Sử");
 
+        jList1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jList1.setModel(new DefaultListModel());
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -141,5 +145,12 @@ public class LichSu extends javax.swing.JInternalFrame {
         }
         jList1.setCellRenderer(new Renderer());
         jList1.setModel(model);
+    }
+
+    private void init() {
+        JDesktopPane Desktop1 = mainForm.Desktop1;
+        Dimension size1 = Desktop1.getSize();
+        Dimension size = this.getSize();
+        this.setLocation((size1.width - size.width) / 2, (size1.height - size.height) / 2);
     }
 }

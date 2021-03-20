@@ -351,7 +351,6 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
         lbltitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbltitle.setText("Thêm thể loại");
 
-        cboName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboNameActionPerformed(evt);
@@ -558,7 +557,7 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void jListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListMouseClicked
-        // TODO add your handling code here: 
+            // TODO add your handling code here: 
         if (evt.getClickCount() == 2) {
             if (check()) {
                 return;
@@ -794,7 +793,6 @@ public class QuanLyTruyen extends javax.swing.JInternalFrame {
 
     private void edit() {
         int id = (int) tblTruyen.getValueAt(row, 0);
-        System.out.println(id);
         Truyen tr = dao.selectByID(id);
         this.setModel(tr);
         tabs.setSelectedIndex(0);

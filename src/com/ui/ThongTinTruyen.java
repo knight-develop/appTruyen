@@ -20,6 +20,7 @@ import com.models.theLoai;
 import com.ui.mainForm;
 import static com.ui.mainForm.Desktop1;
 import com.utils.Auth;
+import static com.utils.Auth.user;
 import com.utils.MsgBox;
 
 import com.utils.XImage;
@@ -32,6 +33,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
+
 /**
  *
  * @author admin
@@ -53,11 +55,12 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
     public static String nameChuong = "";
     public static boolean flag1;
     public static int index;
+
     public ThongTinTruyen() {
         initComponents();
         init();
-
         add();
+        
     }
 
     /**
@@ -294,9 +297,9 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
 
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         // TODO add your handling code here:
-
         Truyen tr = dao.selectByName(name);
         List<Chuong> list = cDAO.selectByTID(tr.getId());
+
         if (list == null) {
             MsgBox.alert(this, "Truyện đang được cập nhật");
             return;
@@ -305,6 +308,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         PDFform pdf = new PDFform();
         Desktop1.add(pdf);
         pdf.setVisible(true);
+        addViews();
         if (check()) {
             return;
         }
@@ -313,23 +317,24 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
 
     private void listCgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCgMouseClicked
         // TODO add your handling code here:       
-        flag1 = false;
-        nameChuong = String.valueOf(listCg.getSelectedValue());
-        index = listCg.getSelectedIndex();
-        System.out.println(index);
-        System.out.println(nameChuong);
-        PDFform pdf = new PDFform();
-        Desktop1.add(pdf);
-        pdf.setVisible(true);
-        if (check()) {
-            return;
+        if (evt.getClickCount() == 2) {
+            flag1 = false;
+            nameChuong = String.valueOf(listCg.getSelectedValue());
+            index = listCg.getSelectedIndex();
+            PDFform pdf = new PDFform();
+            Desktop1.add(pdf);
+            pdf.setVisible(true);
+            addViews();
+            if (check()) {
+                return;
+            }
+            addHis();
         }
-        addHis();
 
     }//GEN-LAST:event_listCgMouseClicked
 
     private void btnFollowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFollowActionPerformed
-        
+
     }//GEN-LAST:event_btnFollowActionPerformed
 
 
@@ -368,6 +373,7 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         txaGT.setWrapStyleWord(true);
         jScrollPane4.setViewportView(txaGT);
         fillToList();
+        
     }
 
     private void add() {
@@ -423,14 +429,19 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
     }
 
     private boolean check() {
+        if (Auth.user == null) {
+            return true;
+        }
         try {
             listHS = hDAO.selectAll();
             Truyen tr = dao.selectByName(name);
+
             for (History hs : listHS) {
                 if (tr.getId() == hs.getTruyen_id()) {
                     return true;
-                }
+                } 
             }
+
         } catch (SQLException ex) {
             Logger.getLogger(ThongTinTruyen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -441,7 +452,14 @@ public class ThongTinTruyen extends javax.swing.JInternalFrame {
         Truyen tr = dao.selectByName(name);
         History hs = new History();
         hs.setTruyen_id(tr.getId());
+        
         hs.setUser_id(Auth.user.getId());
         hDAO.insert(hs);
+    }
+    private void addViews(){
+        Truyen tr = dao.selectByName(name);
+        int views = tr.getViews();
+        tr.setViews(views+1);
+        dao.addViews(tr);
     }
 }

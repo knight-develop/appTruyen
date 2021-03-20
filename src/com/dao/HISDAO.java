@@ -17,10 +17,10 @@ import java.util.List;
  * @author admin
  */
 public class HISDAO {
-    String insert_sql = "INSERT dbo.lichSu( user_id,truyen_id )VALUES  (?,?)";
+    String insert_sql = "insert into lichsu(users_id, truyen_id) values(?,?)";
     String delete_sql = "DELETE FROM dbo.lichSu WHERE truyen_id = ?";
     public void insert(History hs){
-        JDBCHelper.update(insert_sql,hs.getTruyen_id());
+        JDBCHelper.update(insert_sql, hs.getUser_id(),hs.getTruyen_id());
     }
     
     public void delete(History hs){
@@ -46,6 +46,7 @@ public class HISDAO {
                 History us = new History();
                 us.setId(rs.getInt("id"));
                 us.setTruyen_id(rs.getInt("truyen_id"));
+                us.setUser_id(rs.getInt("users_id"));
                 list.add(us);
             }
             rs.getStatement().getConnection().close();

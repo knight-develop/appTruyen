@@ -10,6 +10,7 @@ import com.models.Truyen;
 import com.utils.Auth;
 import com.utils.MsgBox;
 import com.utils.Renderer;
+import com.utils.XImage;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -57,7 +58,7 @@ public class mainForm extends javax.swing.JFrame {
         Desktop1 = new javax.swing.JDesktopPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        listTR = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnRank = new javax.swing.JButton();
@@ -90,14 +91,14 @@ public class mainForm extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jList1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jList1.setModel(new DefaultListModel());
-        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+        listTR.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        listTR.setModel(new DefaultListModel());
+        listTR.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jList1MouseClicked(evt);
+                listTRMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listTR);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Truyện mới cập nhật");
@@ -255,7 +256,6 @@ public class mainForm extends javax.swing.JFrame {
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -272,7 +272,7 @@ public class mainForm extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -393,7 +393,9 @@ public class mainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRankActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRankActionPerformed
-
+        XepHang rank = new XepHang();
+        Desktop1.add(rank);
+        rank.setVisible(true);
     }//GEN-LAST:event_btnRankActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
@@ -447,22 +449,23 @@ public class mainForm extends javax.swing.JFrame {
         tLoai.setVisible(true);
     }//GEN-LAST:event_menuTLActionPerformed
 
-    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+    private void listTRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listTRMouseClicked
         // TODO add your handling code here:
-        Object sel = null;
+        if (evt.getClickCount() == 2) {
+            Object sel = null;
 
-        int[] selectedIx = this.jList1.getSelectedIndices();
+            int[] selectedIx = this.listTR.getSelectedIndices();
 
-        for (int i = 0; i < selectedIx.length; i++) {
-            sel = jList1.getModel().getElementAt(selectedIx[i]);
+            for (int i = 0; i < selectedIx.length; i++) {
+                sel = listTR.getModel().getElementAt(selectedIx[i]);
+            }
+            name = String.valueOf(sel);
+            ThongTinTruyen ttr = new ThongTinTruyen();
+
+            Desktop1.add(ttr);
+            ttr.setVisible(true);
         }
-        name = String.valueOf(sel);
-        System.out.println(sel);
-        ThongTinTruyen ttr = new ThongTinTruyen();
-
-        Desktop1.add(ttr);
-        ttr.setVisible(true);
-    }//GEN-LAST:event_jList1MouseClicked
+    }//GEN-LAST:event_listTRMouseClicked
 
     private void btnACCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnACCActionPerformed
         // TODO add your handling code here:
@@ -477,10 +480,18 @@ public class mainForm extends javax.swing.JFrame {
             MsgBox.alert(this, "Bạn cần đăng nhập để thực hiện chức năng");
             return;
         }
+        else{
+            MsgBox.alert(this, "Chức năng đang được cập nhật");
+            return;
+        }
     }//GEN-LAST:event_btnFolowActionPerformed
 
     private void btnHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistoryActionPerformed
         // TODO add your handling code here:
+        if (Auth.user == null) {
+            MsgBox.alert(this, "Bạn cần đăng nhập để thực hiện chức năng");
+            return;
+        }
         LichSu ls = new LichSu();
         Desktop1.add(ls);
         ls.setVisible(true);
@@ -549,7 +560,6 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    public static javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -559,6 +569,7 @@ public class mainForm extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    public static javax.swing.JList<String> listTR;
     private javax.swing.JMenuItem menuChuong;
     private javax.swing.JMenuItem menuDMK;
     private javax.swing.JMenuItem menuDX;
@@ -572,7 +583,7 @@ public class mainForm extends javax.swing.JFrame {
     public static javax.swing.JMenu mnuTruyen;
     // End of variables declaration//GEN-END:variables
     public static void fill() {
-        model = (DefaultListModel) jList1.getModel();
+        model = (DefaultListModel) listTR.getModel();
         model.clear();
         List<Truyen> list = tRDAO.selectAll();
         if (list == null) {
@@ -581,28 +592,14 @@ public class mainForm extends javax.swing.JFrame {
         for (Truyen tr : list) {
             model.addElement(new Truyen(tr.getName(), new ImageIcon("E:\\DuAn1\\appDocTruyen\\src\\com\\imgStory\\" + tr.getHinh())));
         }
-        jList1.setCellRenderer(new Renderer());
-        jList1.setModel(model);
+        listTR.setCellRenderer(new Renderer());
+        listTR.setModel(model);
     }
 
-    private void IMGRun() {
 
-        List<Truyen> listTR = tRDAO.selectAll();
-        new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < 5; i++) {
-
-                }
-
-            }
-
-        }).start();
-    }
 
     private void init() {
-
-        
+        this.setIconImage(XImage.getAppIcon());
         ImageIcon icon = new ImageIcon("E:\\DuAn1\\appDocTruyen\\src\\com\\image\\" + images[0]);
         Image img = icon.getImage();
         Image scale = img.getScaledInstance(jLabel2.getWidth(), jLabel2.getHeight(), Image.SCALE_SMOOTH);

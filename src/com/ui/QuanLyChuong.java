@@ -12,6 +12,7 @@ import com.models.Chuong;
 import com.models.Truyen;
 import com.models.tacGia;
 import com.utils.MsgBox;
+import com.utils.XImage;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,10 +70,10 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         btnDelete = new javax.swing.JButton();
         btnDelete1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblChuong = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         cboSearch = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblChuong = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -193,25 +194,6 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
 
         tabs.addTab("Thông tin chương", jPanel1);
 
-        tblChuong.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tblChuong.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "ID", "Chương"
-            }
-        ));
-        tblChuong.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblChuongMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tblChuong);
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel4.setText("Truyện");
 
@@ -222,20 +204,49 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
             }
         });
 
+        tblChuong.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        tblChuong.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "ID", "Tên chương"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblChuong.setRowHeight(20);
+        tblChuong.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblChuongMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblChuong);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(175, 175, 175)
                 .addComponent(jLabel4)
                 .addGap(62, 62, 62)
                 .addComponent(cboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(241, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(35, 35, 35)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(37, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,9 +255,12 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cboSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addContainerGap(389, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(88, 88, 88)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         tabs.addTab("Danh sách", jPanel2);
@@ -295,10 +309,9 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         if (list.isEmpty()) {
             return;
         }
-        for (Truyen tr : list) {           
+        for (Truyen tr : list) {
             model.addElement(tr);
-            System.out.println(tr);
-        }      
+        }
     }
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnADDActionPerformed
         // TODO add your handling code here:
@@ -313,6 +326,7 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         JFileChooser jfc = new JFileChooser("E:\\DuAn1\\appDocTruyen\\src\\com\\chapter");
         if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = jfc.getSelectedFile();
+            
             try {
                 FileInputStream imgInFile = new FileInputStream(file);
                 byte[] imgData = new byte[(int) file.length()];
@@ -337,15 +351,6 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         update();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void tblChuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChuongMouseClicked
-        // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
-            row = tblChuong.getSelectedRow();
-
-            this.edit();
-        }
-    }//GEN-LAST:event_tblChuongMouseClicked
-
     private void btnDelete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelete1ActionPerformed
         // TODO add your handling code here:
         clearForm();
@@ -363,6 +368,15 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
         }
         fillTable(list);
     }//GEN-LAST:event_cboSearchActionPerformed
+
+    private void tblChuongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblChuongMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            this.row = tblChuong.getSelectedRow();
+            tabs.setSelectedIndex(0);
+            edit();
+        }
+    }//GEN-LAST:event_tblChuongMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -417,14 +431,18 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
     private boolean checkValidate() {
         Truyen tr = (Truyen) cboTruyen.getSelectedItem();
         List<Chuong> list = dao.selectByTID(tr.getId());
+
         if (txtname.getText().isEmpty()) {
             MsgBox.alert(this, "Tên chương đang trống");
             return true;
-        }
-        for (Chuong cg : list) {
-            if (cg.getTenChuong().equals(txtname.getText())) {
-                MsgBox.alert(this, "Tên chương đã tồn tại");
-                return true;
+        } else if (list == null) {
+            return false;
+        } else {
+            for (Chuong cg : list) {
+                if (cg.getTenChuong().equals(txtname.getText())) {
+                    MsgBox.alert(this, "Tên chương đã tồn tại");
+                    return true;
+                }
             }
         }
         return false;
@@ -476,14 +494,15 @@ public class QuanLyChuong extends javax.swing.JInternalFrame {
     }
 
     private void edit() {
-        int id = (int) tblChuong.getValueAt(this.row, 0);
+        int id = (int) tblChuong.getValueAt(row, 0);
         try {
             Chuong cg = dao.selectByID(id);
             this.setModel(cg);
+            updateStatus();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        updateStatus();
+        
     }
 
     private void setModel(Chuong cg) {

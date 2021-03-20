@@ -49,6 +49,7 @@ public class UserDAO {
             ResultSet rs = JDBCHelper.query(sql, args);
             while(rs.next()){
                 User us = new User();
+                us.setId(rs.getInt("id"));
                 us.setUser(rs.getString("username"));
                 us.setPass(rs.getString("passwords"));
                 us.setRole(rs.getBoolean("roles"));
